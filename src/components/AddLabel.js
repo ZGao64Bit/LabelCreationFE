@@ -1,6 +1,6 @@
 import React from "react";
 import { Form, Input, Button, message } from "antd";
-import { uploadStay } from "../utils";
+import { uploadLabel } from "../utils";
 
 const layout = {
     labelCol: { span: 8 },
@@ -24,7 +24,7 @@ class AddLabel extends React.Component {
             loading: true,
         });
         try {
-            await uploadStay(formData);
+            await uploadLabel(formData);
             message.success("Label Added");
         } catch (error) {
             message.error(error.message);

@@ -2,7 +2,7 @@ import { Layout, Dropdown, Menu, Button } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import React from "react";
 import LoginPage from "./components/LoginPage";
-import HostHomePage from "./components/HostHomePage";
+import HostHomePage from "./components/UserHomePage";
 
 
 const { Header, Content } = Layout;
@@ -58,7 +58,7 @@ class App extends React.Component {
     render() {
         return (
             <Layout style={{ height: "100vh" }}>
-                <Header style={{ display: "flex", justifyContent: "space-between" }}>
+                <Header style={{ display: "flex", justifyContent: "space-between", backgroundColor: "#4050FF" }}>
                     <div style={{ fontSize: 16, fontWeight: 600, color: "white" }}>
                         Label Creation
                     </div>

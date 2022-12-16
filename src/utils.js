@@ -1,4 +1,4 @@
-const domain = "http://localhost:8080"; // https://all-stack.wl.r.appspot.com 
+const domain = "https://labelcreation.ue.r.appspot.com" //"http://localhost:8080"; 
 
 export const login = (credential) => {
     const loginUrl = `${domain}/authenticate/`;
@@ -68,7 +68,7 @@ export const deleteLabel = (stayId) => {
 };
 
 
-export const uploadStay = (data) => {
+export const uploadLabel = (data) => {
     const authToken = localStorage.getItem("authToken");
     const uploadStayUrl = `${domain}/labels`;
     return fetch(uploadStayUrl, {

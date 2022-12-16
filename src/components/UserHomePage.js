@@ -11,7 +11,7 @@ const { TabPane } = Tabs;
 class HostHomePage extends React.Component {
     render() {
         return (
-            <Tabs defaultActiveKey="1" destroyInactiveTabPane={true}>
+            <Tabs defaultActiveKey="1" destroyInactiveTabPane={true} centered>
                 <TabPane tab="My Labels" key="1">
                     <MyLabels />
                 </TabPane>
@@ -29,7 +29,7 @@ class RemoveLabelButton extends React.Component {
         loading: false,
     };
 
-    handleRemoveStay = async () => {
+    handleRemoveLabel = async () => {
         const { stay, onRemoveSuccess } = this.props;
         this.setState({
             loading: true,
@@ -50,7 +50,7 @@ class RemoveLabelButton extends React.Component {
         return (
             <Button
                 loading={this.state.loading}
-                onClick={this.handleRemoveStay}
+                onClick={this.handleRemoveLabel}
                 danger={true}
                 shape="round"
                 type="primary"
