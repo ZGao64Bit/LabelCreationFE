@@ -1,13 +1,10 @@
 import {
-    message, Tabs, List, Card, Image, Carousel, Button, Tooltip, Space, Modal
+    message, Tabs, List, Card, Button
 } from "antd";
-import {
-    LeftCircleFilled, RightCircleFilled, InfoCircleOutlined
-} from "@ant-design/icons";
 import Text from "antd/lib/typography/Text";
 import React from "react";
-import { getStaysByHost, deleteStay, getReservationsByStay } from "../utils";
-import UploadStay from "./UploadStay";
+import { getLabelByUser, deleteLabel } from "../utils";
+import AddLabel from "./AddLabel";
 
 const { TabPane } = Tabs;
 
@@ -15,120 +12,19 @@ class HostHomePage extends React.Component {
     render() {
         return (
             <Tabs defaultActiveKey="1" destroyInactiveTabPane={true}>
-                <TabPane tab="My Stays" key="1">
-                    <MyStays />
+                <TabPane tab="My Labels" key="1">
+                    <MyLabels />
                 </TabPane>
-                <TabPane tab="Upload Stay" key="2">
-                    <UploadStay />
+                <TabPane tab="Add Label" key="2">
+                    <AddLabel />
                 </TabPane>
             </Tabs>
         );
     }
 }
 
-class ReservationList extends React.Component {
-    state = {
-        loading: false,
-        reservations: [],
-    };
 
-    componentDidMount() {
-        this.loadData();
-    }
-
-    loadData = async () => {
-        this.setState({
-            loading: true,
-        });
-
-        try {
-            const resp = await getReservationsByStay(this.props.stayId);
-            this.setState({
-                reservations: resp,
-            });
-        } catch (error) {
-            message.error(error.message);
-        } finally {
-            this.setState({
-                loading: false,
-            });
-        }
-    };
-
-    render() {
-        const { loading, reservations } = this.state;
-
-        return (
-            <List
-                loading={loading}
-                dataSource={reservations}
-                renderItem={(item) => (
-                    <List.Item>
-                        <List.Item.Meta
-                            title={<Text>Guest Name: {item.guest.username}</Text>}
-                            description={
-                                <>
-                                    <Text>Checkin Date: {item.checkin_date}</Text>
-                                    <br />
-                                    <Text>Checkout Date: {item.checkout_date}</Text>
-                                </>
-                            }
-                        />
-                    </List.Item>
-                )}
-            />
-        );
-    }
-}
-
-class ViewReservationsButton extends React.Component {
-    state = {
-        modalVisible: false,
-    };
-
-    openModal = () => {
-        this.setState({
-            modalVisible: true,
-        });
-    };
-
-    handleCancel = () => {
-        this.setState({
-            modalVisible: false,
-        });
-    };
-
-    render() {
-        const { stay } = this.props;
-        const { modalVisible } = this.state;
-
-        const modalTitle = `Reservations of ${stay.name}`;
-
-        return (
-            <>
-                <Button onClick={this.openModal} shape="round">
-                    View Reservations
-                </Button>
-                {modalVisible && (
-                    <Modal
-                        title={modalTitle}
-                        centered={true}
-                        visible={modalVisible}
-                        closable={false}
-                        footer={null}
-                        onCancel={this.handleCancel}
-                        destroyOnClose={true}
-                    >
-                        <ReservationList stayId={stay.id} />
-                    </Modal>
-                )}
-            </>
-        );
-    }
-}
-
-
-class RemoveStayButton extends React.Component {
+class RemoveLabelButton extends React.Component {
     state = {
         loading: false,
     };
@@ -140,7 +36,7 @@ class RemoveStayButton extends React.Component {
         });
 
         try {
-            await deleteStay(stay.id);
+            await deleteLabel(stay.id);
             onRemoveSuccess();
         } catch (error) {
             message.error(error.message);
@@ -159,69 +55,13 @@ class RemoveStayButton extends React.Component {
                 shape="round"
                 type="primary"
             >
-                Remove Stay
+                Delete Label
             </Button>
         );
     }
 }
 
-export class StayDetailInfoButton extends React.Component {
-    state = {
-        modalVisible: false,
-    };
-
-    openModal = () => {
-        this.setState({
-            modalVisible: true,
-        });
-    };
-
-    handleCancel = () => {
-        this.setState({
-            modalVisible: false,
-        });
-    };
-
-    render() {
-        const { stay } = this.props;
-        const { name, description, address, guest_number } = stay;
-        const { modalVisible } = this.state;
-        return (
-            <>
-                <Tooltip title="View Stay Details">
-                    <Button
-                        onClick={this.openModal}
-                        style={{ border: "none" }}
-                        size="large"
-                        icon={<InfoCircleOutlined />}
-                    />
-                </Tooltip>
-                {modalVisible && (
-                    <Modal
-                        title={name}
-                        centered={true}
-                        visible={modalVisible}
-                        closable={false}
-                        footer={null}
-                        onCancel={this.handleCancel}
-                    >
-                        <Space direction="vertical">
-                            <Text strong={true}>Description</Text>
-                            <Text type="secondary">{description}</Text>
-                            <Text strong={true}>Address</Text>
-                            <Text type="secondary">{address}</Text>
-                            <Text strong={true}>Guest Number</Text>
-                            <Text type="secondary">{guest_number}</Text>
-                        </Space>
-                    </Modal>
-                )}
-            </>
-        );
-    }
-
-}
-
-class MyStays extends React.Component {
+class MyLabels extends React.Component {
     state = {
         loading: false,
         data: [],
@@ -237,7 +77,7 @@ class MyStays extends React.Component {
         });
 
         try {
-            const resp = await getStaysByHost();
+            const resp = await getLabelByUser();
             this.setState({
                 data: resp,
             });
@@ -273,26 +113,11 @@ class MyStays extends React.Component {
                                     <Text ellipsis={true} style={{ maxWidth: 150 }}>
                                         {item.name}
                                     </Text>
-                                    <StayDetailInfoButton stay={item} />
                                 </div>
                             }
-                            actions={[<ViewReservationsButton stay={item} />]}
-                            extra={<RemoveStayButton stay={item} onRemoveSuccess={this.loadData} />}
+                            extra={<RemoveLabelButton stay={item} onRemoveSuccess={this.loadData} />}
                         >
-                            {
-                                <Carousel
-                                    dots={false}
-                                    arrows={true}
-                                    prevArrow={<LeftCircleFilled />}
-                                    nextArrow={<RightCircleFilled />}
-                                >
-                                    {item.images.map((image, index) => (
-                                        <div key={index}>
-                                            <Image src={image.url} width="100%" />
-                                        </div>
-                                    ))}
-                                </Carousel>
-                            }
+                            <p>Label added by user</p>
                         </Card>
                     </List.Item>
                 )}

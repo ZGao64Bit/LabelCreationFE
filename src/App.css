@@ -1,8 +1,17 @@
-.App {
-  text-align: center;
+.ant-layout-header {
+  height: 64px;
+  padding: 0 50px;
+  color: rgba(0, 0, 0, 0.85);
+  line-height: 64px;
+  background: #5040ff;
 }
 
-.App-logo {
+
+/* .App {
+  text-align: center;
+} */
+
+/* .App-logo {
   height: 40vmin;
   pointer-events: none;
 }
@@ -11,10 +20,10 @@
   .App-logo {
     animation: App-logo-spin infinite 10s linear;
   }
-}
+} */
 
-.App-header {
-  background-color: #282c34;
+/* .App-header {
+  background-color: #5040FF;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -35,4 +44,4 @@
   to {
     transform: rotate(360deg);
   }
-}
+} */
